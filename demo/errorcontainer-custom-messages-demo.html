@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Test for jQuery validate() plugin</title>
+	<link rel="stylesheet" media="screen" href="css/screen.css">
+	<script src="../lib/jquery.js"></script>
+	<script src="../dist/jquery.validate.js"></script>
+	<style>
+	.cmxform fieldset p.error label {
+		color: red;
+	}
+	div.container {
+		background-color: #eee;
+		border: 1px solid red;
+		margin: 5px;
+		padding: 5px;
+	}
+	div.container ol li {
+		list-style-type: disc;
+		margin-left: 20px;
+	}
+	div.container {
+		display: none
+	}
+	.container label.error {
+		display: inline;
+	}
+	form.cmxform {
+		width: 30em;
+	}
+	form.cmxform label.error {
+		display: block;
+		margin-left: 1em;
+		width: auto;
+	}
+	</style>
+	<script>
+	// only for demo purposes
+	$.validator.setDefaults({
+		submitHandler: function() {
+			alert("submitted! (skipping validation for cancel button)");
+		}
+	});
+
+	$().ready(function() {
+		var container = $('div.container');
+		// validate the form when it is submitted
+		var validator = $("#form2").validate({
+			rules:{
+				email:{
+					required:true,
+				}
+			},
+			messages:{
+				email:{
+					required:"Email is required."
+				},
+
+			},
+			errorContainer: container,
+			errorLabelContainer: $("ol", container),
+			errorElement: 'a',
+			wrapper: 'li'
+		});
+
+		$(".cancel").click(function() {
+			validator.resetForm();
+		});
+		window.validator = validator;
+	});
+	</script>
+</head>
+
+<body>
+	<h1 id="banner"><a href="http://jqueryvalidation.org/">jQuery Validation Plugin</a> Demo</h1>
+	<div id="main">
+		<!-- our error container -->
+		<div class="container">
+			<h4>There are serious errors in your form submission, please see below for details.</h4>
+			<ol>
+				<li>
+					<!-- <a href="#email" class="error"></a> -->
+					<a href="#email" class="error"></a>
+				</li>
+				<li>
+					<a for="#phone" class="error"></a>
+				</li>
+				<li>
+					<a for="#address" class="error"></a>
+				</li>
+				<li>
+					<a for="#avatar" class="error"></a>
+				</li>
+				<li>
+					<a for="#cv" class="error"></a>
+				</li>
+				<!-- <li>
+					<label for="email" class="error"></label>
+				</li>
+				<li>
+					<label for="phone" class="error"></label>
+				</li>
+				<li>
+					<label for="address" class="error"></label>
+				</li>
+				<li>
+					<label for="avatar" class="error"></label>
+				</li>
+				<li>
+					<label for="cv" class="error"></label>
+				</li> -->
+			</ol>
+		</div>
+		<form class="cmxform" id="form2" method="get" action="">
+			<fieldset>
+				<legend>Validating a complete form</legend>
+				<p>
+					<label for="email">Email</label>
+					<input id="email" name="email" type="email">
+				</p>
+				<p>
+					<label for="agree">Favorite Color</label>
+					<select id="color" name="color" title="Please select your favorite color!" >
+						<option></option>
+						<option>Red</option>
+						<option>Blue</option>
+						<option>Yellow</option>
+					</select>
+				</p>
+				<p>
+					<label for="phone">Phone</label>
+					<input id="phone" name="phone"  type="number" rangelength="[2,8]">
+				</p>
+				<p>
+					<label for="address">Address</label>
+					<input id="address" name="address"  minlength="3">
+				</p>
+				<p>
+					<label for="avatar">Avatar</label>
+					<input type="file" id="avatar" name="avatar" >
+				</p>
+				<p>
+					<label for="agree">Please agree to our policy</label>
+					<input type="checkbox" class="checkbox" id="agree" title="Please agree to our policy!" name="agree" >
+				</p>
+				<p>
+					<input class="submit" type="submit" value="Submit">
+					<input class="cancel" type="submit" value="Cancel">
+				</p>
+			</fieldset>
+		</form>
+		<div class="container">
+			<h4>There are serious errors in your form submission, please see details above the form!</h4>
+		</div>
+		<a href="index.html">Back to main page</a>
+	</div>
+</body>
+
+<script type="text/javascript">
+$("a.error").click(function() {
+	// javascript:document.getElementById('firstName').focus()
+  // alert( "this getId " + $(this).attr('href').slice(1) );
+  document.getElementById($(this).attr('href').slice(1)).focus();
+});
+</script>
+</html>
+
