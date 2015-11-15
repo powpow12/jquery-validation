@@ -50,11 +50,35 @@
 			rules:{
 				email:{
 					required:true,
-				}
+				},
+				phone:{
+					required:true,
+				},
+				address:{
+					required:true,
+				},
+				avatar:{
+					required:true,
+				},
+				agree:{
+					required:true,
+				},
 			},
 			messages:{
 				email:{
 					required:"Email is required."
+				},
+				phone:{
+					required:"Phone is required."
+				},
+				address:{
+					required:"Address is required."
+				},
+				avatar:{
+					required:"Avatar is required."
+				},
+				agree:{
+					required:"CV is required."
 				},
 
 			},
@@ -76,39 +100,24 @@
 	<h1 id="banner"><a href="http://jqueryvalidation.org/">jQuery Validation Plugin</a> Demo</h1>
 	<div id="main">
 		<!-- our error container -->
-		<div class="container" tabindex="-1" role="group">
+		<div class="container" tabindex="-1" id="errorContainer" role="group">
 			<h4 aria-labeledby="error-list">There are serious errors in your form submission, please see below for details.</h4>
 			<ol id="error-list">
 				<li>
 					<a href="#email" class="error"></a>
 				</li>
 				<li>
-					<a for="#phone" class="error"></a>
+					<a href="#phone" class="error"></a>
 				</li>
 				<li>
-					<a for="#address" class="error"></a>
+					<a href="#address" class="error"></a>
 				</li>
 				<li>
-					<a for="#avatar" class="error"></a>
+					<a href="#avatar" class="error"></a>
 				</li>
 				<li>
-					<a for="#cv" class="error"></a>
+					<a href="#cv" class="error"></a>
 				</li>
-				<!-- <li>
-					<label for="email" class="error"></label>
-				</li>
-				<li>
-					<label for="phone" class="error"></label>
-				</li>
-				<li>
-					<label for="address" class="error"></label>
-				</li>
-				<li>
-					<label for="avatar" class="error"></label>
-				</li>
-				<li>
-					<label for="cv" class="error"></label>
-				</li> -->
 			</ol>
 		</div>
 		<form class="cmxform" id="form2" method="get" action="">
