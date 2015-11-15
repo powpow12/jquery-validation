@@ -21,8 +21,6 @@ $.extend( $.fn, {
 	validate: function( options ) {
 
 		// if nothing is selected, return nothing; can't chain anyway
-		// console.groupCollapsed("containers"); //RP
-		console.log(!this.length); //RP
 		if ( !this.length ) {
 			if ( options && options.debug && window.console ) {
 				console.warn( "Nothing selected, can't validate, returning nothing." );
@@ -353,7 +351,6 @@ $.extend( $.validator, {
 			this.labelContainer = $( this.settings.errorLabelContainer );
 			this.errorContext = this.labelContainer.length && this.labelContainer || $( this.currentForm );
 			this.containers = $( this.settings.errorContainer ).add( this.settings.errorLabelContainer );
-			console.log(this.containers); //RP
 			this.submitted = {};
 			this.valueCache = {};
 			this.pendingRequest = 0;
@@ -457,7 +454,6 @@ $.extend( $.validator, {
 		// http://jqueryvalidation.org/Validator.showErrors/
 		showErrors: function( errors ) {
 			if ( errors ) {
-				console.log(errors); //RP
 				// add items to error list and map
 				$.extend( this.errorMap, errors );
 				this.errorList = [];
@@ -549,11 +545,16 @@ $.extend( $.validator, {
 		focusInvalid: function() {
 			if ( this.settings.focusInvalid ) {
 				try {
-					$( this.findLastActive() || this.errorList.length && this.errorList[ 0 ].element || [] )
-					.filter( ":visible" )
-					.focus()
-					// manually trigger focusin event; without it, focusin handler isn't called, findLastActive won't have anything to find
-					.trigger( "focusin" );
+					if (this.settings.errorElement == 'a' && this.settings.errorContainer){
+						$(document.getElementById(this.settings.errorContainer.attr('id')).focus());
+					}
+					else{
+						$( this.findLastActive() || this.errorList.length && this.errorList[ 0 ].element || [] )
+						.filter( ":visible" )
+						.focus()
+						// manually trigger focusin event; without it, focusin handler isn't called, findLastActive won't have anything to find
+						.trigger( "focusin" );
+					}
 				} catch ( e ) {
 					// ignore IE throwing errors when focusing hidden elements
 				}
@@ -753,13 +754,9 @@ $.extend( $.validator, {
 
 		defaultShowErrors: function() {
 			var i, elements, error;
-			console.groupCollapsed('defaultShowErrors'); //RP
-			console.log(this.errorList); //RP
-			console.groupEnd(); //RP
 			for ( i = 0; this.errorList[ i ]; i++ ) {
 				error = this.errorList[ i ];
 				if ( this.settings.highlight ) {
-					// console.log("highlight true"); //RP
 					this.settings.highlight.call( this, error.element, this.settings.errorClass, this.settings.validClass );
 				}
 				this.showLabel( error.element, error.message );
@@ -797,21 +794,11 @@ $.extend( $.validator, {
 				error = this.errorsFor( element ),
 				elementID = this.idOrName( element ),
 				describedBy = $( element ).attr( "aria-describedby" );
-			// console.log("this is place" + place); //RP
-			// console.log("this is error" + error); //RP
-			// console.log("this is elementID" + elementID); //RP
-			// console.log("this is describedby" + describedBy); //RP
 
-			console.groupCollapsed('showLabel'); //RP
-			console.log('error length ' + error.length); //RP
-			console.log(error); //RP
-			console.log(element); //RP
-			
 			if ( error.length ) {
 				// refresh error/success class
 				error.removeClass( this.settings.validClass ).addClass( this.settings.errorClass );
 				// replace message on existing label
-				console.log('this is message' + message)
 				error.html( message );
 			} else {
 				// create error element
@@ -827,17 +814,12 @@ $.extend( $.validator, {
 
 				// Maintain reference to the element to be placed into the DOM
 				place = error;
-				console.log('wrapper ' + this.settings.wrapper); //RP
 				if ( this.settings.wrapper ) {
 					// make sure the element is visible, even in IE
 					// actually showing the wrapped element is handled elsewhere
 					place = error.hide().show().wrap( "<" + this.settings.wrapper + "/>" ).parent();
 					//console.log(place)
 				}
-				console.error("this is labelContainer length " + this.labelContainer.length); //RP
-				console.groupCollapsed('error '); //RP
-				console.log(error); //RP
-				console.groupEnd();
 				if ( this.labelContainer.length ) {
 					this.labelContainer.append( place );
 				} else if ( this.settings.errorPlacement ) {
@@ -847,13 +829,7 @@ $.extend( $.validator, {
 				}
 
 				// Link error back to the element
-				//console.log(error.is);
-				if ( error.is( "label" ) ) {
-					console.log("error is label")
-				} else if ( error.is( "a" ) ) {
-					// If the error is a label, then associate using 'for'
-					console.log('error is a')
-				} else if ( error.parents( "label[for='" + this.escapeCssMeta( elementID ) + "']" ).length === 0 ) {
+				if ( error.parents( "label[for='" + this.escapeCssMeta( elementID ) + "']" ).length === 0 ) {
 					// If the element is not a child of an associated label, then it's necessary
 					// to explicitly apply aria-describedby
 
@@ -878,7 +854,6 @@ $.extend( $.validator, {
 						} );
 					}
 				}	
-				// console.groupEnd(); //RP
 			}
 			if ( !message && this.settings.success ) {
 				error.text( "" );
@@ -889,7 +864,6 @@ $.extend( $.validator, {
 				}
 			}
 			this.toShow = this.toShow.add( error );
-			console.groupEnd(); //RP
 		},
 
 		errorsFor: function( element ) {
@@ -900,19 +874,14 @@ $.extend( $.validator, {
 				} else {
 					var selector = "label[for='" + name + "'], label[for='" + name + "'] *";
 				}
-				console.groupCollapsed("errorsFor"); //RP
-				console.log("this is name " + name); //RP
-				console.log(describer);
-				console.log(selector);
+				// console.log(describer);
+				// console.log(selector);
 
 			// aria-describedby should directly reference the error element
 			if ( describer ) {
 				selector = selector + ", #" + this.escapeCssMeta( describer )
 					.replace( /\s+/g, ", #" );
 			}
-			console.log(this.errors());
-			console.log(this.errors().filter( selector ));
-			console.groupEnd();
 			return this
 				.errors()
 				.filter( selector );
