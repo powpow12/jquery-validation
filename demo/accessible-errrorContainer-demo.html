@@ -6,6 +6,7 @@
 	<link rel="stylesheet" media="screen" href="css/screen.css">
 	<script src="../lib/jquery.js"></script>
 	<script src="../dist/jquery.validate.js"></script>
+	<script src="../dist/additional-methods.js"></script>
 	<style>
 	.cmxform fieldset p.error label {
 		color: red;
@@ -61,9 +62,24 @@
 					required:true,
 				},
 				agree:{
-					required:true,
+					require_from_group:  [1, ".agree"],
+				},
+				agree_1:{
+					require_from_group:  [1, ".agree"],
+				},
+				agree_2:{
+					require_from_group:  [1, ".agree"],
+				},
+				agree_3:{
+					require_from_group:  [1, ".agree"],
+				},
+				agree_4:{
+					require_from_group:  [1, ".agree"],
 				},
 			},
+			groups:{
+            	state_programs: "agree agree_1 agree_2 agree_3 agree_4",
+        	},
 			messages:{
 				email:{
 					required:"Email is required."
@@ -86,6 +102,7 @@
 			errorLabelContainer: $("ol", container),
 			errorElement: 'a',
 			wrapper: 'li',
+			debug: 'true',
 		});
 
 		$(".cancel").click(function() {
@@ -150,7 +167,11 @@
 				</p>
 				<p>
 					<label for="agree">Please agree to our policy</label>
-					<input type="checkbox" class="checkbox" id="agree" title="Please agree to our policy!" name="agree" >
+					<input type="checkbox" class="checkbox agree" id="agree" name="agree" value="true">
+					<input type="checkbox" class="checkbox agree" id="agree1" name="agree1" value="true">
+					<input type="checkbox" class="checkbox agree" id="agree2" name="agree2" value="true">
+					<input type="checkbox" class="checkbox agree" id="agree3" name="agree3" value="true">
+					<input type="checkbox" class="checkbox agree" id="agree4" name="agree4" value="true">
 				</p>
 				<p>
 					<input class="submit" type="submit" value="Submit">
